@@ -1,0 +1,70 @@
+﻿table fct_agency_fy
+
+	column code
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column fiscal_year
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: fiscal_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_authority
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: budget_authority
+
+		annotation SummarizationSetBy = Automatic
+
+	column obligated_fye
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: obligated_fye
+
+		annotation SummarizationSetBy = Automatic
+
+	column outlay_fye
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: outlay_fye
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'Budget Authority' = MAX(fct_agency_fy[budget_authority])
+		formatString: "$" #,##0.0,,
+
+	measure 'Obligated FYE' = MAX(fct_agency_fy[obligated_fye])
+		formatString: "$" #,##0.0,,
+
+	measure 'Outlay FYE' = MAX(fct_agency_fy[outlay_fye])
+		formatString: "$" #,##0.0,,
+
+	measure 'UOB (FYE)' = [Obligated FYE] - [Outlay FYE]
+		formatString: "$" #,##0.0,,
+
+	measure 'Pacing %' = DIVIDE([Obligated FYE], [Budget Authority], BLANK())
+		formatString: 0.0%
+
+	partition fct_agency_fy = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "agency_budgetary_resources.csv"),[Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Renamed" = Table.RenameColumns(#"Promoted Headers",{{"agency_budgetary_resources", "budget_authority"}, {"agency_total_obligated", "obligated_fye"}, {"agency_total_outlayed", "outlay_fye"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed",{{"code", type text}, {"fiscal_year", Int64.Type}, {"budget_authority", Currency.Type}, {"obligated_fye", Currency.Type}, {"outlay_fye", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

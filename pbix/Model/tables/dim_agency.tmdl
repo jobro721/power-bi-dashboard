@@ -1,0 +1,36 @@
+﻿table dim_agency
+
+	column code
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column abbreviation
+		dataType: string
+		summarizeBy: none
+		sourceColumn: abbreviation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_agency = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "toptier_agencies.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"code", type text}, {"name", type text}, {"abbreviation", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

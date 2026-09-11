@@ -1,0 +1,22 @@
+﻿model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder", "dim_period", "dim_agency", "fct_agency_obligations", "fct_agency_fy", "fct_gov_resources", "fct_debt", "fct_receipts", "fct_va_accounts", "fct_macro", "fct_agency_active"]
+
+ref table dim_period
+ref table dim_agency
+ref table fct_agency_obligations
+ref table fct_agency_fy
+ref table fct_gov_resources
+ref table fct_debt
+ref table fct_receipts
+ref table fct_va_accounts
+ref table fct_macro
+ref table fct_agency_active

@@ -1,0 +1,51 @@
+﻿table fct_va_accounts
+
+	column code
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column obligated_amount
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: obligated_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column gross_outlay_amount
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: gross_outlay_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'VA Account Obligations' = SUM(fct_va_accounts[obligated_amount])
+		formatString: "$" #,##0.0,,
+
+	measure 'VA Account UOB' = SUM(fct_va_accounts[obligated_amount]) - SUM(fct_va_accounts[gross_outlay_amount])
+		formatString: "$" #,##0.0,,
+
+	partition fct_va_accounts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "va_federal_accounts.csv"),[Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"code", type text}, {"name", type text}, {"obligated_amount", Currency.Type}, {"gross_outlay_amount", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

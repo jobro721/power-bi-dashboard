@@ -1,0 +1,71 @@
+﻿table fct_receipts
+
+	column record_date
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: record_date
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column classification
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: classification
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_code
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: line_code
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column current_month_amt
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: current_month_amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column fytd_amt
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: fytd_amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column prior_fytd_amt
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: prior_fytd_amt
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'Receipts (FYTD)' = MAX(fct_receipts[fytd_amt])
+		formatString: "$" #,##0.0,,
+
+	measure 'Receipts (Current Month)' = MAX(fct_receipts[current_month_amt])
+		formatString: "$" #,##0.0,,
+
+	partition fct_receipts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "mts_receipts.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Renamed" = Table.RenameColumns(#"Promoted Headers",{{"classification_desc", "classification"}, {"line_code_nbr", "line_code"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed",{{"record_date", Date.Type}, {"classification", type text}, {"line_code", type text}, {"current_month_amt", Currency.Type}, {"fytd_amt", Currency.Type}, {"prior_fytd_amt", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

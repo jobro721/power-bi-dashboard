@@ -1,0 +1,64 @@
+﻿table fct_agency_active
+
+	column code
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column active_fy
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: active_fy
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column outlay_amount
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: outlay_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column obligated_amount
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: obligated_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_authority_amount
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: budget_authority_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'Active-FY Outlays (111 agencies)' = SUM(fct_agency_active[outlay_amount])
+		formatString: "$" #,##0.0,,
+
+	measure 'Active-FY Obligations' = SUM(fct_agency_active[obligated_amount])
+		formatString: "$" #,##0.0,,
+
+	measure 'Active-FY Budget Authority' = SUM(fct_agency_active[budget_authority_amount])
+		formatString: "$" #,##0.0,,
+
+	partition fct_agency_active = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "fct_agency_active.csv"),[Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"code", type text}, {"active_fy", type text}, {"outlay_amount", Currency.Type}, {"obligated_amount", Currency.Type}, {"budget_authority_amount", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

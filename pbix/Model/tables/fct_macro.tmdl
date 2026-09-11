@@ -1,0 +1,41 @@
+﻿table fct_macro
+
+	column series
+		dataType: string
+		isKey
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: series
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column value
+		dataType: double
+		formatString: 0.00
+		summarizeBy: none
+		sourceColumn: value
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'Macro Value (latest)' = MAX(fct_macro[value])
+		formatString: 0.00
+
+	partition fct_macro = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "macro_series.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"series", type text}, {"date", Date.Type}, {"value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

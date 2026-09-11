@@ -1,0 +1,65 @@
+{
+  "name": "ModernLedger",
+  "dataColors": [
+    "#1E4B38",
+    "#7C3B4B",
+    "#A68A5B",
+    "#8A6D3F",
+    "#2B241D",
+    "#5F564A"
+  ],
+  "foreground": "#2B241D",
+  "background": "#FAF7F0",
+  "tableAccent": "#1E4B38",
+  "textClasses": {
+    "title": {
+      "color": "#2B241D",
+      "fontFace": "Georgia",
+      "fontSize": "14pt"
+    },
+    "label": {
+      "color": "#5F564A",
+      "fontFace": "Georgia",
+      "fontSize": "11pt"
+    },
+    "callout": {
+      "color": "#1E4B38",
+      "fontFace": "Georgia",
+      "fontSize": "24pt"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "color": "#FAF7F0",
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": "#E7DFD1",
+            "radius": 8
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#2B241D"
+              }
+            }
+          },
+          {
+            "background": {
+              "show": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}

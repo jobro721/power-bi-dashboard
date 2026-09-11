@@ -1,0 +1,44 @@
+﻿table fct_gov_resources
+
+	column fiscal_year
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: fiscal_year
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column fiscal_period
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: fiscal_period
+
+		annotation SummarizationSetBy = Automatic
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column total_budgetary_resources
+		dataType: decimal
+		formatString: "$" #,##0.0,,
+		summarizeBy: sum
+		sourceColumn: total_budgetary_resources
+
+		annotation SummarizationSetBy = Automatic
+
+	measure 'Gov Budgetary Resources (cum.)' = MAX(fct_gov_resources[total_budgetary_resources])
+		formatString: "$" #,##0.0,,
+
+	partition fct_gov_resources = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(DataFolder & "gov_budgetary_resources.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"fiscal_year", Int64.Type}, {"fiscal_period", Int64.Type}, {"total_budgetary_resources", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

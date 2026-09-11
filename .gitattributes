@@ -1,0 +1,3 @@
+federal-budget.pbit binary
+*.tmdl text
+*.csv text eol=lf

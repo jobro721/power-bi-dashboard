@@ -1,0 +1,40 @@
+﻿table dim_period
+
+	column period
+		dataType: int64
+		isKey
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: period
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: string
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_period = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table[period = number, month = text, quarter = text], {
+				    {1, "Oct", "Q1"}, {2, "Nov", "Q1"}, {3, "Dec", "Q1"},
+				    {4, "Jan", "Q2"}, {5, "Feb", "Q2"}, {6, "Mar", "Q2"},
+				    {7, "Apr", "Q3"}, {8, "May", "Q3"}, {9, "Jun", "Q3"},
+				    {10, "Jul", "Q4"}, {11, "Aug", "Q4"}, {12, "Sep", "Q4"}
+				    })
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

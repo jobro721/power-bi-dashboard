@@ -1,0 +1,26 @@
+{
+  "as_of": "2026-09-11",
+  "source": "federal-budget-data/data/budget.db (USAspending API v2 + Treasury fiscaldata + FRED, all public domain)",
+  "tolerance": 0.01,
+  "values": {
+    "VA FY26 P10 obligated YTD": 371051747429.48,
+    "VA FY26 P2 obligated YTD": 77378680077.69,
+    "VA FY26 P10 period delta": 37119706721.45996,
+    "VA FY26 obligated FYE (last actual)": 371051747429.48,
+    "VA FY26 budget authority": 525641887103.91,
+    "VA FY26 obligated FYE": 371051747429.48,
+    "VA FY26 outlay FYE": 382390734652.69,
+    "VA FY26 UOB (FYE)": -11338987223.210022,
+    "VA FY26 pacing %": 0.7059021674886607,
+    "Gov BR cumulative FY23 P11": 13615337201704.1,
+    "Total public debt (latest)": 40074284925786.5,
+    "Debt held by public (latest)": 32388611390871.8,
+    "Receipts Total FYTD (max in file)": 7009973667049.3,
+    "VA 036-0102 account obligations": 177918274520.18,
+    "VA 036-0102 account UOB": 15633462431.630005,
+    "gs10 latest (2026-08-01)": 4.68,
+    "DFF latest (2026-09-09)": 3.63,
+    "Active-FY outlays, 111 agencies": 8735253707729.27,
+    "Active-FY obligations, 111 agencies": 9191763126385.97
+  }
+}

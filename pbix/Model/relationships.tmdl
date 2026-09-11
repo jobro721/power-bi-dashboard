@@ -1,0 +1,20 @@
+﻿relationship 23cb5c02-2704-58a0-b8a3-cc3f460990f6
+	fromColumn: dim_agency.code
+	toColumn: fct_agency_obligations.code
+
+relationship 9d93e4c3-7027-5867-891b-7a226b4d1478
+	fromColumn: dim_agency.code
+	toColumn: fct_agency_fy.code
+
+relationship 2045ff9e-6e43-59bc-b33c-09b0d9151417
+	fromCardinality: one
+	fromColumn: dim_agency.code
+	toColumn: fct_agency_active.code
+
+relationship dad855e4-db63-5aff-b4a9-8f839c7936e8
+	fromColumn: dim_period.period
+	toColumn: fct_agency_obligations.period
+
+relationship d47c8ddb-a2d8-5eb6-adb5-c3042fd3a74b
+	fromColumn: dim_period.period
+	toColumn: fct_gov_resources.fiscal_period
