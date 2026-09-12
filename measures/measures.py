@@ -102,7 +102,10 @@ class Model:
 
     # ---------- fct_gov_resources ----------
 
-    def gov_br_cumulative(self, fy, period):
+    def gov_br_fy_estimate(self, fy, period):
+        """'Gov Budgetary Resources (fy est.)' = MAX(total_budgetary_resources).
+        NOT cumulative: each (fy, period) row is the *current full-year
+        estimate*, which gets revised as the year progresses."""
         rows = [F(r["total_budgetary_resources"]) for r in self.gov
                 if int(r["fiscal_year"]) == fy and int(r["fiscal_period"]) == period]
         return max(rows) if rows else None
@@ -187,7 +190,7 @@ PINNED_CASES = {
     "VA FY26 outlay FYE": lambda m: m.outlay_fye("036", 2026),
     "VA FY26 UOB (FYE)": lambda m: m.uob_fye("036", 2026),
     "VA FY26 pacing %": lambda m: m.pacing("036", 2026),
-    "Gov BR cumulative FY23 P11": lambda m: m.gov_br_cumulative(2023, 11),
+    "Gov BR fy estimate FY23 P11": lambda m: m.gov_br_fy_estimate(2023, 11),
     "Total public debt (latest)": lambda m: m.debt_latest(),
     "Debt held by public (latest)": lambda m: m.debt_public_latest(),
     "Receipts Total FYTD (max in file)": lambda m: m.receipts_fytd("Total"),

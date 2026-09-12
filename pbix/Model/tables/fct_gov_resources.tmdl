@@ -28,7 +28,7 @@
 
 		annotation SummarizationSetBy = Automatic
 
-	measure 'Gov Budgetary Resources (cum.)' = MAX(fct_gov_resources[total_budgetary_resources])
+	measure 'Gov Budgetary Resources (fy est.)' = MAX(fct_gov_resources[total_budgetary_resources])
 		formatString: "$" #,##0.0,,
 
 	partition fct_gov_resources = m

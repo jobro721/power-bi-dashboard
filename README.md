@@ -83,7 +83,7 @@ dim_period (12)  |
 | Obligated FYE / Outlay FYE | `MAX(…)` | `m.obligated_fye(…)` / `m.outlay_fye(…)` |
 | UOB (FYE) | `[Obligated FYE] − [Outlay FYE]` | `m.uob_fye(…)` |
 | Pacing % | `DIVIDE([Obligated FYE], [Budget Authority], BLANK())` | `m.pacing(…)` |
-| Gov Budgetary Resources (cum.) | `MAX(…)` | `m.gov_br_cumulative(…)` |
+| Gov Budgetary Resources (fy est.) | `MAX(…)` — current full-year estimate, not cumulative | `m.gov_br_fy_estimate(…)` |
 | Total Public Debt / Debt Held by the Public | `MAX(…)` | `m.debt_latest(…)` / `m.debt_public_latest(…)` |
 | Receipts (FYTD) / (Current Month) | `MAX(…)` | `m.receipts_fytd(…)` / `m.receipts_current_month(…)` |
 | VA Account Obligations / UOB | `SUM(…)` | `m.va_account_obligations(…)` / `m.va_account_uob(…)` |
