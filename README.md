@@ -64,7 +64,7 @@ dim_period (12)  |
 | `dim_agency` | top-tier agency (111) | `toptier_agencies.csv` |
 | `dim_period` | fiscal month P1–P12 (static) | — (inline `#table`) |
 | `fct_agency_obligations` | agency × FY × period, cumulative | `agency_obligation_by_period.csv` |
-| `fct_agency_fy` | agency × FY totals (VA, DoD, DHS) | `agency_budgetary_resources.csv` |
+| `fct_agency_fy` | agency × FY totals (VA 036, Treasury 020, USDA 012) | `agency_budgetary_resources.csv` |
 | `fct_gov_resources` | government × FY × period | `gov_budgetary_resources.csv` |
 | `fct_debt` | daily debt-to-the-penny | `debt_to_penny.csv` |
 | `fct_receipts` | MTS Table 9, monthly | `mts_receipts.csv` |
