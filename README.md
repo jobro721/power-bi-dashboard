@@ -5,11 +5,6 @@ A production-style Power BI semantic model for US federal budget data: **star sc
 both diffable source (`.pbixproj` + TMDL) and a compiled `.pbit` you can open in
 Power BI Desktop.
 
-This is the Power BI leg of the [jo_projects](../) federal-budget portfolio. The data
-spine lives in the sibling repo [`federal-budget-data`](../federal-budget-data)
-(USAspending API v2 + Treasury fiscaldata + FRED — all public domain, pulled and
-frozen 2026-09-11).
-
 ## Why this shape
 
 - **`.pbit` = a zip of plain text.** The model is TMDL (Textual Metadata Definition
